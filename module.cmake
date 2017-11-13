@@ -1,0 +1,8 @@
+message(STATUS "Loading cmake module: AuroraFWBuild")
+include(${CMAKE_MODULE_AURORAFW_DIR}/AuroraFWBuildConfig.cmake)
+find_package(AuroraFWBuild)
+message(STATUS "Loading cmake module: AuroraFW")
+include(${CMAKE_MODULE_AURORAFW_DIR}/AuroraFWConfig.cmake)
+find_package(AuroraFW)
+install(FILES ${CMAKE_MODULE_AURORAFW_DIR}/AuroraFWBuildConfig.cmake DESTINATION share/cmake/AuroraFWBuild )
+install(FILES ${CMAKE_MODULE_AURORAFW_DIR}/AuroraFWConfig.cmake DESTINATION share/cmake/AuroraFW )
