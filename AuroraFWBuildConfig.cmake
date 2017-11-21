@@ -111,6 +111,7 @@ ENDIF()
 
 #Define output directory
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
+	add_definitions(-DAFW__DEBUG)
 	SET(LIBRARY_OUTPUT_PATH ${AURORAFW_ROOT_DIR}/bin/dbg)
 	SET(EXECUTABLE_OUTPUT_PATH ${AURORAFW_ROOT_DIR}/bin/dbg)
 else()
