@@ -72,6 +72,10 @@ OPTION(AURORA_PCH "Enable experimental feature: Pre-compiled headers" OFF)
 # General Flags
 ###############################################################################
 
+IF(NOT CMAKE_BUILD_TYPE)
+	SET(CMAKE_BUILD_TYPE "Release")
+ENDIF()
+
 IF(NOT CONFIGURED_ONCE)
 IF(CMAKE_GENERATOR MATCHES "Ninja")
 	SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fdiagnostics-color")
