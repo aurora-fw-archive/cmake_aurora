@@ -35,7 +35,7 @@ set(AURORAFW_BUILDCONFIG_VERSION_MAJOR )
 
 if(NOT AURORAFWBUILD_QUITE_GREETINGS)
 	message(STATUS "Loading aurora framework build config...")
-	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+	IF(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin")
 		MESSAGE("[32m┌─┐┬[36m ┬┬─[34m┐┌─┐[35m┬─┐[32m┌─┐[0m  ┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬┌─┐┬─┐┬┌─")
 		MESSAGE("[36m├─┤│[34m │├┬[35m┘│ │[32m├┬┘[36m├─┤[0m  ├┤ ├┬┘├─┤│││├┤ ││││ │├┬┘├┴┐")
 		MESSAGE("[34m┴ ┴└[35m─┘┴└[32m─└─┘[36m┴└─[34m┴ ┴[0m  └  ┴└─┴ ┴┴ ┴└─┘└┴┘└─┘┴└─┴ ┴")
