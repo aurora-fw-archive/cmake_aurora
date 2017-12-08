@@ -113,6 +113,10 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g0 -w -std=c++1z")
 ENDIF()
 
+IF(AURORA_CODECOVERAGE)
+	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -coverage -fprofile-arcs -ftest-coverage -fPIC -O0")
+ENDIF()
+
 #Define output directory
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DAFW__DEBUG)
