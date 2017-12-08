@@ -54,7 +54,7 @@ IF(AURORAFW_IS_BUILDING)
 	endif()
 
 	option(AURORA_TARGET_DOCUMENTATION "Enable documentation target" OFF)
-	option(AURORA_DOCUMENTATION_AUTO "Enable automatic documentation building" ON)	
+	option(AURORA_DOCUMENTATION_AUTO "Enable automatic documentation building" OFF)
 ENDIF()
 
 ###############################################################################
