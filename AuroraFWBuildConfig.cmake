@@ -35,7 +35,7 @@ set(AURORAFW_BUILDCONFIG_VERSION_MAJOR )
 
 if(NOT AURORAFWBUILD_QUITE_GREETINGS)
 	message(STATUS "Loading aurora framework build config...")
-	IF(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin")
+	IF(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Darwin" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
 		MESSAGE("[32m┌─┐┬[36m ┬┬─[34m┐┌─┐[35m┬─┐[32m┌─┐[0m  ┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬┌─┐┬─┐┬┌─")
 		MESSAGE("[36m├─┤│[34m │├┬[35m┘│ │[32m├┬┘[36m├─┤[0m  ├┤ ├┬┘├─┤│││├┤ ││││ │├┬┘├┴┐")
 		MESSAGE("[34m┴ ┴└[35m─┘┴└[32m─└─┘[36m┴└─[34m┴ ┴[0m  └  ┴└─┴ ┴┴ ┴└─┘└┴┘└─┘┴└─┴ ┴")
@@ -99,7 +99,6 @@ else()
 	add_definitions(-nostdlib -DAFW__FORCE_NO_STDLIB_CC)
 ENDIF()
 
-add_definitions(-DAFW__COMPILING)
 #C++ 17 Standard Revision
 set_property(GLOBAL PROPERTY CXX_STANDARD 17)
 set_property(GLOBAL PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -293,6 +292,10 @@ set(${PREFIX}_LIB_SEARCH_PATH ${${PREFIX}_LIB_SEARCH_PATH} lib/${ANDROID_ABI})
 endif()
 set(${PREFIX}_FRAMEWORK_SEARCH_PATH ${${PREFIX}_PREFIX_PATH})
 endmacro(create_search_paths)
+
+macro(aurora_add_library_target _target)
+target_compile_definitions(${_target} PUBLIC -DAFW__COMPILING)
+endmacro(aurora_add_library_target)
 
 # clear cache variables if a certain variable changed
 macro(clear_if_changed TESTVAR)
