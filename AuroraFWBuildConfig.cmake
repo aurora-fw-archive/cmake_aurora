@@ -211,7 +211,7 @@ GET_DIRECTORY_PROPERTY(_directory_flags INCLUDE_DIRECTORIES)
 SET(_CMAKE_CURRENT_BINARY_DIR_included_before_path FALSE)
 FOREACH(item ${_directory_flags})
 	IF(${item} STREQUAL ${_path} AND NOT _CMAKE_CURRENT_BINARY_DIR_included_before_path )
-		MESSAGE(FATAL_ERROR 
+		MESSAGE(FATAL_ERROR
 			"This is the ADD_PRECOMPILED_HEADER macro. "
 			"CMAKE_CURREN_BINARY_DIR has to mentioned at INCLUDE_DIRECTORIES's argument list before ${_path}, where ${_name} is located"
 		)	
@@ -433,16 +433,16 @@ endmacro(findpkg_framework)
 ##################################################################
 
 # Available platform targets (AURORA_PLATFORM_TARGET):
-# 	- linux
-# 	- win
-# 	- android
-# 	- default (auto detection)
+#	- linux
+#	- win
+#	- android
+#	- default (auto detection)
 
 # Available compilers (AURORA_COMPILER_TARGET):
-# 	- gcc
-# 	- clang
-# 	- mingw
-# 	- default (auto detection)
+#	- gcc
+#	- clang
+#	- mingw
+#	- default (auto detection)
 
 IF(AURORA_PLATFORM_TARGET MATCHES "linux")
 IF(AURORA_COMPILER_TARGET MATCHES "gcc")
@@ -502,11 +502,11 @@ ENDIF()
 ENDIF()
 
 # Available CPU Architecture targets (AURORA_CPUARCH_TARGET):
-# 	- x86_64
-# 	- x86
-# 	- arm
-# 	- aarch64
-# 	- default (auto detection)
+#	- x86_64
+#	- x86
+#	- arm
+#	- aarch64
+#	- default (auto detection)
 
 IF(AURORA_CPUARCH_TARGET MATCHES "x86_64")
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
