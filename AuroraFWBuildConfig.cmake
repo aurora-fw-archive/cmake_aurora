@@ -67,6 +67,7 @@ OPTION(AURORA_FORCE_NO_STDLIB "Force compilation without standard libraries" OFF
 OPTION(AURORA_STDLIB_CC "Compile with C standard library" ON)
 OPTION(AURORA_STDLIB_CXX "Compile with C++ standard template library" ON)
 OPTION(AURORA_PCH "Enable experimental feature: Pre-compiled headers" OFF)
+OPTION(AURORA_VERBOSE_CODE "Enable verbose instructions" OFF)
 
 ###############################################################################
 # General Flags
@@ -122,6 +123,9 @@ ENDIF()
 #Define output directory
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DAFW__DEBUG)
+	if(AURORA_VERBOSE_CODE)
+		add_definitions(-DAFW__VERBOSE)
+	endif()
 	SET(LIBRARY_OUTPUT_PATH ${AURORAFW_ROOT_DIR}/bin/dbg)
 	SET(EXECUTABLE_OUTPUT_PATH ${AURORAFW_ROOT_DIR}/bin/dbg)
 else()
