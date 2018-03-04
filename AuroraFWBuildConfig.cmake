@@ -68,6 +68,8 @@ OPTION(AURORA_STDLIB_CC "Compile with C standard library" ON)
 OPTION(AURORA_STDLIB_CXX "Compile with C++ standard template library" ON)
 OPTION(AURORA_PCH "Enable experimental feature: Pre-compiled headers" OFF)
 OPTION(AURORA_VERBOSE_CODE "Enable verbose instructions" OFF)
+OPTION(AURORA_DLANG_WRAPPER "Enable D wrapper" OFF)
+OPTION(AURORA_DLANG "Enable D native source compilation" OFF)
 
 ###############################################################################
 # General Flags
@@ -119,6 +121,13 @@ ENDIF()
 IF(AURORA_CODECOVERAGE)
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -coverage -fprofile-arcs -ftest-coverage -fPIC -O0")
 ENDIF()
+
+if(AURORA_DLANG)
+	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${AURORAFW_ROOT_DIR}/cmake/d/cmake-d")
+	project(aurorafw-d D)
+	set(CMAKE_D_FLAGS_DEBUG "${CMAKE_D_FLAGS_DEBUG} -wi")
+	set(CMAKE_D_FLAGS "${CMAKE_D_FLAGS} -color=on")
+endif()
 
 #Define output directory
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -451,6 +460,10 @@ endmacro(findpkg_framework)
 #	- clang
 #	- mingw
 #	- default (auto detection)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+	set(AURORA_LIBRARY_EXT "so")
+endif()
 
 IF(AURORA_PLATFORM_TARGET MATCHES "linux")
 IF(AURORA_COMPILER_TARGET MATCHES "gcc")
