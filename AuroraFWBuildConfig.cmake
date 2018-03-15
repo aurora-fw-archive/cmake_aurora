@@ -16,12 +16,12 @@
 
 ###############################################################################
 # PCHSupport_FOUND
-# AURORA_PRECOMPILE_HEADERS
-# AURORA_FORCE_STDLIB
-# AURORA_FORCE_NO_STDLIB
-# AURORA_STDLIB_CC
-# AURORA_STDLIB_CXX
-# AURORA_PCH
+# AURORAFW_PRECOMPILE_HEADERS
+# AURORAFW_FORCE_STDLIB
+# AURORAFW_FORCE_NO_STDLIB
+# AURORAFW_STDLIB_CC
+# AURORAFW_STDLIB_CXX
+# AURORAFW_PCH
 # ADD_PRECOMPILED_HEADER()
 ###############################################################################
 
@@ -53,23 +53,23 @@ IF(AURORAFW_IS_BUILDING)
 		#SET(AURORAFW_BUILD_DIR ${AURORAFW_ROOT_DIR}/build)
 	endif()
 
-	option(AURORA_TARGET_DOCUMENTATION "Enable documentation target" OFF)
-	option(AURORA_DOCUMENTATION_AUTO "Enable automatic documentation building" OFF)
+	option(AURORAFW_TARGET_DOCUMENTATION "Enable documentation target" OFF)
+	option(AURORAFW_DOCUMENTATION_AUTO "Enable automatic documentation building" OFF)
 ENDIF()
 
 ###############################################################################
 # Aurora build system option flags
 ###############################################################################
 
-OPTION(AURORA_PRECOMPILE_HEADERS "Enable precompilation of headers" OFF)
-OPTION(AURORA_FORCE_STDLIB "Force compilation with standard libraries" OFF)
-OPTION(AURORA_FORCE_NO_STDLIB "Force compilation without standard libraries" OFF)
-OPTION(AURORA_STDLIB_CC "Compile with C standard library" ON)
-OPTION(AURORA_STDLIB_CXX "Compile with C++ standard template library" ON)
-OPTION(AURORA_PCH "Enable experimental feature: Pre-compiled headers" OFF)
-OPTION(AURORA_VERBOSE_CODE "Enable verbose instructions" OFF)
-OPTION(AURORA_DLANG_WRAPPER "Enable D wrapper" OFF)
-OPTION(AURORA_DLANG "Enable D native source compilation" OFF)
+OPTION(AURORAFW_PRECOMPILE_HEADERS "Enable precompilation of headers" OFF)
+OPTION(AURORAFW_FORCE_STDLIB "Force compilation with standard libraries" OFF)
+OPTION(AURORAFW_FORCE_NO_STDLIB "Force compilation without standard libraries" OFF)
+OPTION(AURORAFW_STDLIB_CC "Compile with C standard library" ON)
+OPTION(AURORAFW_STDLIB_CXX "Compile with C++ standard template library" ON)
+OPTION(AURORAFW_PCH "Enable experimental feature: Pre-compiled headers" OFF)
+OPTION(AURORAFW_VERBOSE_CODE "Enable verbose instructions" OFF)
+OPTION(AURORAFW_DLANG_WRAPPER "Enable D wrapper" OFF)
+OPTION(AURORAFW_DLANG "Enable D native source compilation" OFF)
 
 ###############################################################################
 # General Flags
@@ -85,18 +85,18 @@ IF(CMAKE_GENERATOR MATCHES "Ninja")
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fdiagnostics-color")
 ENDIF()
 #Add flag for AFW_EXPORT
-IF(AURORA_FORCE_STDLIB)
+IF(AURORAFW_FORCE_STDLIB)
 	add_definitions(-DAFW__FORCE_STDLIB)
-ELSEIF(AURORA_FORCE_NO_STDLIB)
+ELSEIF(AURORAFW_FORCE_NO_STDLIB)
 	add_definitions(-nodefaultlibs -nostdlib -lgcc -DAFW__FORCE_NO_STDLIB)
 ENDIF()
-IF(AURORA_STDLIB_CXX)
+IF(AURORAFW_STDLIB_CXX)
 	add_definitions(-DAFW__FORCE_STDLIB_CXX)
 else()
 	SET(CMAKE_CXX_COMPILER ${CMAKE_C_COMPILER})
 	add_definitions(-DAFW__FORCE_NO_STDLIB_CXX)
 ENDIF()
-IF(AURORA_STDLIB_CC)
+IF(AURORAFW_STDLIB_CC)
 	add_definitions(-DAFW__FORCE_STDLIB_CC)
 else()
 	add_definitions(-nodefaultlibs -nostdlib -lgcc -DAFW__FORCE_NO_STDLIB_CC)
@@ -118,11 +118,11 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++1z")
 ENDIF()
 
-IF(AURORA_CODECOVERAGE)
+IF(AURORAFW_CODECOVERAGE)
 	SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -coverage -fprofile-arcs -ftest-coverage -fPIC -O0")
 ENDIF()
 
-if(AURORA_DLANG)
+if(AURORAFW_DLANG)
 	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${AURORAFW_ROOT_DIR}/cmake/d/cmake-d")
 	project(aurorafw-d D)
 	set(CMAKE_D_FLAGS_DEBUG "${CMAKE_D_FLAGS_DEBUG} -wi")
@@ -132,7 +132,7 @@ endif()
 #Define output directory
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
 	add_definitions(-DAFW__DEBUG)
-	if(AURORA_VERBOSE_CODE)
+	if(AURORAFW_VERBOSE_CODE)
 		add_definitions(-DAFW__VERBOSE)
 	endif()
 	SET(LIBRARY_OUTPUT_PATH ${AURORAFW_ROOT_DIR}/bin/dbg)
@@ -143,7 +143,7 @@ else()
 ENDIF()
 ENDIF()
 
-MACRO(AURORA_ADD_CMAKE_MODULE _name_var _type)
+MACRO(AURORAFW_ADD_CMAKE_MODULE _name_var _type)
 	string(REPLACE " " "_" ___tmp ${_name_var})
 	string(TOUPPER ${___tmp} _tmp)
 	string(TOLOWER ${_type} __tmp)
@@ -171,7 +171,7 @@ MACRO(AURORA_ADD_CMAKE_MODULE _name_var _type)
 	endif()
 	unset(_tmp)
 	unset(__tmp)
-ENDMACRO(AURORA_ADD_CMAKE_MODULE)
+ENDMACRO(AURORAFW_ADD_CMAKE_MODULE)
 
 ###############################################################################
 # Precompiled Headers
@@ -197,7 +197,7 @@ ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 MACRO(ADD_PRECOMPILED_HEADER _targetName _input )
 
 IF(NOT CMAKE_BUILD_TYPE)
-	MESSAGE(FATAL_ERROR 
+	MESSAGE(FATAL_ERROR
 		"This is the ADD_PRECOMPILED_HEADER macro. "
 		"You must set CMAKE_BUILD_TYPE!"
 	)
@@ -227,7 +227,7 @@ FOREACH(item ${_directory_flags})
 		MESSAGE(FATAL_ERROR
 			"This is the ADD_PRECOMPILED_HEADER macro. "
 			"CMAKE_CURREN_BINARY_DIR has to mentioned at INCLUDE_DIRECTORIES's argument list before ${_path}, where ${_name} is located"
-		)	
+		)
 	ENDIF(${item} STREQUAL ${_path} AND NOT _CMAKE_CURRENT_BINARY_DIR_included_before_path )
 
 	IF(${item} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
@@ -309,13 +309,13 @@ endif()
 set(${PREFIX}_FRAMEWORK_SEARCH_PATH ${${PREFIX}_PREFIX_PATH})
 endmacro(create_search_paths)
 
-macro(aurora_add_target _target)
+macro(aurorafw_add_target _target)
 	#target_compile_options(${_target} PUBLIC -nodefaultlibs -nostdlib -lgcc)
-endmacro(aurora_add_target)
+endmacro(aurorafw_add_target)
 
-macro(aurora_add_library_target _target _type)
+macro(aurorafw_add_library_target _target _type)
 	if(_type MATCHES SHARED)
-		aurora_add_target(${_target})
+		aurorafw_add_target(${_target})
 		target_compile_definitions(${_target} PUBLIC -DAFW__COMPILING)
 		target_compile_options(${_target} PUBLIC -fPIC)
 		IF(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -323,15 +323,22 @@ macro(aurora_add_library_target _target _type)
 		endif()
 		install(TARGETS ${_target} DESTINATION lib)
 	elseif(_type MATCHES STATIC)
-		
-	endif()
-endmacro(aurora_add_library_target)
 
-macro(aurora_add_executable_target _target)
-	aurora_add_target(${_target})
+	endif()
+endmacro(aurorafw_add_library_target)
+
+macro(aurorafw_add_executable_target _target)
+	aurorafw_add_target(${_target})
 	#target_compile_definitions(${_target} PUBLIC -DAFW__COMPILING)
 	#target_compile_options(${_target} PUBLIC -Wl,-rpath,"\$ORIGIN")
-endmacro(aurora_add_executable_target)
+endmacro(aurorafw_add_executable_target)
+
+macro(aurorafw_print_debug_vars)
+get_cmake_property(_variableNames VARIABLES)
+foreach (_variableName ${_variableNames})
+	message(STATUS "${_variableName}=${${_variableName}}")
+endforeach()
+endmacro(aurorafw_print_debug_vars)
 
 # clear cache variables if a certain variable changed
 macro(clear_if_changed TESTVAR)
@@ -449,29 +456,29 @@ endmacro(findpkg_framework)
 
 ##################################################################
 
-# Available platform targets (AURORA_PLATFORM_TARGET):
+# Available platform targets (AURORAFW_PLATFORM_TARGET):
 #	- linux
 #	- win
 #	- android
 #	- default (auto detection)
 
-# Available compilers (AURORA_COMPILER_TARGET):
+# Available compilers (AURORAFW_COMPILER_TARGET):
 #	- gcc
 #	- clang
 #	- mingw
 #	- default (auto detection)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-	set(AURORA_LIBRARY_EXT "so")
+	set(AURORAFW_LIBRARY_EXT "so")
 endif()
 
-IF(AURORA_PLATFORM_TARGET MATCHES "linux")
-IF(AURORA_COMPILER_TARGET MATCHES "gcc")
+IF(AURORAFW_PLATFORM_TARGET MATCHES "linux")
+IF(AURORAFW_COMPILER_TARGET MATCHES "gcc")
 	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 		SET(CMAKE_C_COMPILER "/usr/bin/gcc")
 		SET(CMAKE_CXX_COMPILER "/usr/bin/g++")
 	ENDIF()
-ELSEIF(AURORA_COMPILER_TARGET MATCHES "clang")
+ELSEIF(AURORAFW_COMPILER_TARGET MATCHES "clang")
 	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 		SET(CMAKE_C_COMPILER "/usr/bin/clang")
 		SET(CMAKE_CXX_COMPILER "/usr/bin/clang++")
@@ -487,7 +494,7 @@ ELSEIF(AURORA_COMPILER_TARGET MATCHES "clang")
 		SET(CMAKE_C_FLAGS_MINSIZEREL_INIT "-Os -DNDEBUG")
 		SET(CMAKE_C_FLAGS_RELEASE_INIT "-O4 -DNDEBUG")
 		SET(CMAKE_C_FLAGS_RELWITHDEBINFO_INIT "-O2 -g")
-		
+
 		SET(CMAKE_CXX_FLAGS_INIT "-Wall")
 		SET(CMAKE_CXX_FLAGS_DEBUG_INIT "-g")
 		SET(CMAKE_CXX_FLAGS_MINSIZEREL_INIT "-Os -DNDEBUG")
@@ -495,9 +502,9 @@ ELSEIF(AURORA_COMPILER_TARGET MATCHES "clang")
 		SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO_INIT "-O2 -g")
 	ENDIF()
 ENDIF()
-SET(AURORA_PLATFORM_PREFIX "linux")
-ELSEIF(AURORA_PLATFORM_TARGET MATCHES "win" OR AURORA_PLATFORM_TARGET MATCHES "windows")
-IF(AURORA_COMPILER_TARGET MATCHES "mingw")
+SET(AURORAFW_PLATFORM_PREFIX "linux")
+ELSEIF(AURORAFW_PLATFORM_TARGET MATCHES "win" OR AURORAFW_PLATFORM_TARGET MATCHES "windows")
+IF(AURORAFW_COMPILER_TARGET MATCHES "mingw")
 	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 		IF(CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
 			SET(CMAKE_C_COMPILER "/usr/bin/x86_64-w64-mingw32-gcc")
@@ -508,62 +515,62 @@ IF(AURORA_COMPILER_TARGET MATCHES "mingw")
 		ENDIF()
 	ENDIF()
 ENDIF()
-SET(AURORA_PLATFORM_PREFIX "win")
+SET(AURORAFW_PLATFORM_PREFIX "win")
 ELSE()
-SET(AURORA_PLATFORM_TARGET "default")
+SET(AURORAFW_PLATFORM_TARGET "default")
 IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
-	SET(AURORA_PLATFORM_PREFIX "linux")
+	SET(AURORAFW_PLATFORM_PREFIX "linux")
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Windows")
-	SET(AURORA_PLATFORM_PREFIX "win")
+	SET(AURORAFW_PLATFORM_PREFIX "win")
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-	SET(AURORA_PLATFORM_PREFIX "darwin")
+	SET(AURORAFW_PLATFORM_PREFIX "darwin")
 ELSE()
-	SET(AURORA_PLATFORM_PREFIX "unknown")
+	SET(AURORAFW_PLATFORM_PREFIX "unknown")
 ENDIF()
 ENDIF()
 
-# Available CPU Architecture targets (AURORA_CPUARCH_TARGET):
+# Available CPU Architecture targets (AURORAFW_CPUARCH_TARGET):
 #	- x86_64
 #	- x86
 #	- arm
 #	- aarch64
 #	- default (auto detection)
 
-IF(AURORA_CPUARCH_TARGET MATCHES "x86_64")
+IF(AURORAFW_CPUARCH_TARGET MATCHES "x86_64")
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
 IF(CMAKE_C_COMPILER MATCHES "/usr/bin/i686-w64-mingw32-gcc" OR CMAKE_CXX_COMPILER STREQUAL "/usr/bin/i686-w64-mingw32-g++")
 	SET(CMAKE_C_COMPILER "/usr/bin/x86_64-w64-mingw32-gcc")
 	SET(CMAKE_CXX_COMPILER "/usr/bin/x86_64-w64-mingw32-g++")
 ENDIF()
-SET(AURORA_CPUARCH_PREFIX "x86_64")
-ELSEIF(AURORA_CPUARCH_TARGET MATCHES "x86")
+SET(AURORAFW_CPUARCH_PREFIX "x86_64")
+ELSEIF(AURORAFW_CPUARCH_TARGET MATCHES "x86")
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 IF(CMAKE_C_COMPILER MATCHES "/usr/bin/x86_64-w64-mingw32-gcc" OR CMAKE_CXX_COMPILER STREQUAL "/usr/bin/x86_64-w64-mingw32-g++")
 	SET(CMAKE_C_COMPILER "/usr/bin/i686-w64-mingw32-gcc")
 	SET(CMAKE_CXX_COMPILER "/usr/bin/i686-w64-mingw32-g++")
 ENDIF()
-SET(AURORA_CPUARCH_PREFIX "x86")
-ELSEIF(AURORA_CPUARCH_TARGET MATCHES "arm")
-IF(AURORA_COMPILER_TARGET MATCHES "gcc" OR AURORA_COMPILER_TARGET MATCHES "default")
-	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")	
+SET(AURORAFW_CPUARCH_PREFIX "x86")
+ELSEIF(AURORAFW_CPUARCH_TARGET MATCHES "arm")
+IF(AURORAFW_COMPILER_TARGET MATCHES "gcc" OR AURORAFW_COMPILER_TARGET MATCHES "default")
+	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 		SET(CMAKE_C_COMPILER "/usr/bin/arm-none-eabi-gcc")
 		SET(CMAKE_C_COMPILER "/usr/bin/arm-none-eabi-g++")
 	ENDIF()
 ENDIF()
-SET(AURORA_CPUARCH_PREFIX "arm")
-ELSEIF(AURORA_CPUARCH_TARGET MATCHES "aarch64")
-IF(AURORA_COMPILER_TARGET MATCHES "gcc" OR AURORA_COMPILER_TARGET MATCHES "default")
+SET(AURORAFW_CPUARCH_PREFIX "arm")
+ELSEIF(AURORAFW_CPUARCH_TARGET MATCHES "aarch64")
+IF(AURORAFW_COMPILER_TARGET MATCHES "gcc" OR AURORAFW_COMPILER_TARGET MATCHES "default")
 	IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
 		SET(CMAKE_C_COMPILER "/usr/bin/aarch64-linux-gnu-gcc")
 		SET(CMAKE_C_COMPILER "/usr/bin/aarch64-linux-gnu-g++")
 	ENDIF()
 ENDIF()
-SET(AURORA_CPUARCH_PREFIX "aarch64")
+SET(AURORAFW_CPUARCH_PREFIX "aarch64")
 ELSE()
-SET(AURORA_CPUARCH_TARGET "default")
-SET(AURORA_CPUARCH_PREFIX ${CMAKE_HOST_SYSTEM_PROCESSOR})
+SET(AURORAFW_CPUARCH_TARGET "default")
+SET(AURORAFW_CPUARCH_PREFIX ${CMAKE_HOST_SYSTEM_PROCESSOR})
 ENDIF()
 
 endif(NOT DEFINED AURORAFWBUILD_LOADED)
